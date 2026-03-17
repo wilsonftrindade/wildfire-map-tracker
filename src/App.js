@@ -1,9 +1,11 @@
+import Map from "./components/Map"
+
 function App() {
   return (
-    <div className="App">
-      <h1> Wildfire Tracker </h1>
+    <div>
+      <Map/>
     </div>
-  );
-}
+  )
+};
 
 export default App;

@@ -2,4 +2,4 @@
 Interactive wildfire tracker built with React using NASA data.
 
 ## Status
-Project setup in progress.
+Basic React setup complete.
