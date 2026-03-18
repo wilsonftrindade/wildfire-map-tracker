@@ -21,7 +21,7 @@ function App() {
 
   return (
     <div>
-      {!loading ? <Map/> : <Loader/>}
+      {!loading ? <Map eventData ={eventData}/> : <Loader/>}
     </div>
   )
 };
