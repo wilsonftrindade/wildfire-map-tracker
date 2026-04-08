@@ -1,52 +1,53 @@
 import { useEffect, useState } from "react";
-import Map from './components/Map'
-import Loader from './components/Loader'
+import Map from './components/Map';
+import Loader from './components/Loader';
 
 function App() {
-  const [eventData, setEventData] = useState([])
-  const[loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const [eventData, setEventData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchEvents = async () => {
       try{
-        setLoading(true)
-        setError(null)
+        setLoading(true);
+        setError(null);
 
-        const res = await fetch('https://eonet.gsfc.nasa.gov/api/v2.1/events')
+        const res = await fetch('https://eonet.gsfc.nasa.gov/api/v3/events');
 
         if (!res.ok){
-          throw new Error(`Request failed with status ${res.status}`)
+          throw new Error(`Request failed with status ${res.status}`);
         }
 
-        const {events} = await res.json()
+        const {events} = await res.json();
 
-        setEventData(events)
+        setEventData(events);
       }
 
       catch (err){
-        setError(err.message)
+        setError(err.message);
       }
       finally{
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchEvents()
-  }, [])
+    fetchEvents();
+  }, []);
 
   if (loading){
-    return <Loader/>
+    return <Loader/>;
   }
+
   if (error){
-    return <p>{error}</p>
+    return <p>{error}</p>;
   }
 
   return (
     <div>
       <Map eventData ={eventData}/>
     </div>
-  )
+  );
 };
 
 export default App;

@@ -1,21 +1,34 @@
-import GoogleMapReact from 'google-map-react'
-import Marker from './Marker'
+import { useMemo } from "react";
+import GoogleMapReact from 'google-map-react';
+import Marker from './Marker';
 
-const Map = ({eventData, center = {lat: 42.0565, lng: -87.6753}, zoom = 6}) => {
-    const markers = eventData.map(ev => {
-      if (ev.categories[0].id === 8){
-        return <Marker key = {ev.id} lat = {ev.geometries[0].coordinates[1]} lng = {ev.geometries[0].coordinates[0]}/>
-      }
-      return null
-    })
-    return (
-    <div className = "map">
+const Map = ({ eventData, center = { lat: 42.0565, lng: -87.6753 }, zoom = 6 }) => {
+  const wildfireEvents = useMemo(() => {
+    return eventData
+      .filter(ev => {
+        return (
+          ev.categories &&
+          ev.categories.length > 0 &&
+          ev.geometry &&
+          ev.geometry.length > 0 &&
+          ev.geometry[0].coordinates &&
+          ev.geometry[0].coordinates.length >= 2 &&
+          ev.categories[0].id === 'wildfires'
+        );
+      })
+      .map(ev => {
+        return <Marker key={ev.id} lat={ev.geometry[0].coordinates[1]} lng={ev.geometry[0].coordinates[0]}/>;
+      })
+  }, [eventData]);
+
+  return (
+    <div className="map">
         <GoogleMapReact
             bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY }}
             defaultCenter={center}
             defaultZoom={zoom}
         >
-          {markers}
+        {wildfireEvents}
         </GoogleMapReact>
     </div>
   );
