@@ -3,7 +3,6 @@ import GoogleMapReact from 'google-map-react';
 import Marker from './Marker';
 import Header from "./Header";
 
-
 // Map Component
 const Map = ({ eventData, center = { lat: 42.0565, lng: -87.6753 }, zoom = 6 }) => {
   const[bounds, setBounds] = useState(null);
@@ -33,8 +32,8 @@ const Map = ({ eventData, center = { lat: 42.0565, lng: -87.6753 }, zoom = 6 }) 
 
         const north = bounds.ne.lat;
         const south = bounds.se.lat;
-        const east = bounds.ne.lng;
-        const west = bounds.nw.lng;
+        const east = normalizeLng(bounds.ne.lng);
+        const west = normalizeLng(bounds.nw.lng);
 
         const isWithinLat = latitude <= north && latitude >= south;
 
@@ -86,7 +85,7 @@ const Map = ({ eventData, center = { lat: 42.0565, lng: -87.6753 }, zoom = 6 }) 
               defaultCenter={center}
               defaultZoom={zoom}
               onChange={(mapState) => {
-              setBounds(mapState.bounds);
+                setBounds(mapState.bounds);
               }}
           >
           {markers}
@@ -94,6 +93,10 @@ const Map = ({ eventData, center = { lat: 42.0565, lng: -87.6753 }, zoom = 6 }) 
       </div>
     </div>
   );
+};
+
+const normalizeLng = (lng) => {
+  return (((((lng + 180) % 360) + 360) % 360) -180)
 };
 
 export default Map;
