@@ -2,12 +2,11 @@ import { useMemo, useState } from "react";
 import GoogleMapReact from 'google-map-react';
 import Marker from './Marker';
 
-// Constants
-const MAX_MARKERS = 1000;
 
 // Map Component
 const Map = ({ eventData, center = { lat: 42.0565, lng: -87.6753 }, zoom = 6 }) => {
-  const[bounds, setBounds] = useState(null)
+  const[bounds, setBounds] = useState(null);
+  const[maxMarkers, setMaxMarkers] = useState(500);
 
   const wildfireEvents = useMemo(() => {
     return eventData.filter(ev => {
@@ -48,30 +47,47 @@ const Map = ({ eventData, center = { lat: 42.0565, lng: -87.6753 }, zoom = 6 }) 
         }
 
         return isWithinLat && isWithinLng;
-      })
-      .slice(0, MAX_MARKERS);     
+      });   
   }), [wildfireEvents, bounds]);
 
+  const limitedWildfireMarkers = useMemo(() => {
+    return visibleWildfireEvents.slice(0, maxMarkers);  
+  },[maxMarkers, visibleWildfireEvents]);
+
   const markers = useMemo(() => {
-    return visibleWildfireEvents.map(ev => {
+    return limitedWildfireMarkers.map(ev => {
       return (
         <Marker key={ev.id} lat={ev.geometry[0].coordinates[1]} lng={ev.geometry[0].coordinates[0]}/>
       );
     });
-  }, [visibleWildfireEvents]);
+  }, [limitedWildfireMarkers]);
 
   return (
-    <div className="map">
-        <GoogleMapReact
-            bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY }}
-            defaultCenter={center}
-            defaultZoom={zoom}
-            onChange={(mapState) => {
-            setBounds(mapState.bounds);
-            }}
-        >
-        {markers}
-        </GoogleMapReact>
+    <div>
+      <div className="map-selector"> 
+        <label>
+          Maximum number of Markers:
+        </label>
+        <select value={maxMarkers} onChange={(e) => setMaxMarkers(Number(e.target.value))}>
+          <option value={250}>250</option>
+          <option value={500}>500</option>
+          <option value={1000}>1000</option>
+          <option value={2500}>2500</option>
+        </select>
+      </div>
+
+      <div className="map">
+          <GoogleMapReact
+              bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY }}
+              defaultCenter={center}
+              defaultZoom={zoom}
+              onChange={(mapState) => {
+              setBounds(mapState.bounds);
+              }}
+          >
+          {markers}
+          </GoogleMapReact>
+      </div>
     </div>
   );
 };
