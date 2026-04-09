@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import GoogleMapReact from 'google-map-react';
 import Marker from './Marker';
+import Header from "./Header";
 
 
 // Map Component
@@ -64,16 +65,19 @@ const Map = ({ eventData, center = { lat: 42.0565, lng: -87.6753 }, zoom = 6 }) 
 
   return (
     <div>
-      <div className="map-selector"> 
-        <label>
-          Maximum number of Markers:
-        </label>
-        <select value={maxMarkers} onChange={(e) => setMaxMarkers(Number(e.target.value))}>
-          <option value={250}>250</option>
-          <option value={500}>500</option>
-          <option value={1000}>1000</option>
-          <option value={2500}>2500</option>
-        </select>
+      <div className="top-bar">
+        <Header/>
+        <div className="map-selector"> 
+          <label>
+            Maximum number of Markers:
+          </label>
+          <select value={maxMarkers} onChange={(e) => setMaxMarkers(Number(e.target.value))}>
+            <option value={250}>250</option>
+            <option value={500}>500</option>
+            <option value={1000}>1000</option>
+            <option value={2500}>2500</option>
+          </select>
+        </div>
       </div>
 
       <div className="map">
