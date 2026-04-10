@@ -51,7 +51,7 @@ Interactive web application that visualizes real-time wildfire data on a dynamic
 ### 1. Clone the repository
 ```bash
 git clone https://github.com/wilsonftrindade/wildfire-map-tracker.git
-cd wildfire-tracker
+cd wildfire-map-tracker
 ```
 
 ### 2. Install dependencies
