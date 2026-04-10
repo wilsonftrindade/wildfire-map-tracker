@@ -1,6 +1,5 @@
 import { Icon } from '@iconify/react'
 import locationIcon from '@iconify/icons-mdi/fire-alert'
-import React from 'react'
 
 const Header = () => {
   return (

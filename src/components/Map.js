@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import GoogleMapReact from 'google-map-react';
 import Marker from './Marker';
 import Header from "./Header";
+import LocationInfoBox from "./LocationInfoBox"
 
 // Constants
 const regionOptions = {
@@ -48,6 +49,7 @@ const Map = ({ eventData, center = { lat: 42.0565, lng: -87.6753 }, zoom = 6 }) 
   const[bounds, setBounds] = useState(null);
   const[maxMarkers, setMaxMarkers] = useState(500);
   const[region, setRegion] = useState("all");
+  const[locationInfo, setLocationInfo] = useState(null);
 
   const wildfireEvents = useMemo(() => {
     return eventData.filter(ev => {
@@ -110,7 +112,7 @@ const Map = ({ eventData, center = { lat: 42.0565, lng: -87.6753 }, zoom = 6 }) 
   const markers = useMemo(() => {
     return limitedWildfireMarkers.map(ev => {
       return (
-        <Marker key={ev.id} lat={ev.geometry[0].coordinates[1]} lng={ev.geometry[0].coordinates[0]}/>
+        <Marker key={ev.id} lat={ev.geometry[0].coordinates[1]} lng={ev.geometry[0].coordinates[0]} onClick={() => setLocationInfo(ev)}/>
       );
     });
   }, [limitedWildfireMarkers]);
@@ -155,6 +157,7 @@ const Map = ({ eventData, center = { lat: 42.0565, lng: -87.6753 }, zoom = 6 }) 
           >
           {markers}
           </GoogleMapReact>
+          {locationInfo && <LocationInfoBox info={locationInfo}/>}
       </div>
     </div>
   );

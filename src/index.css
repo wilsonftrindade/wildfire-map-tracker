@@ -68,3 +68,25 @@ body{
 .header h1 {
   margin: 0;
 }
+
+.locationInfo {
+  position: absolute;
+  z-index: 1000;
+  top: 50px;
+  right: 50px;
+  width: 400px;
+  padding: 20px;
+  border-radius: 12px;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.523);
+  font-size: 18px;
+}
+
+.locationInfo ul {
+  list-style: none;
+  padding: 0;
+}
+
+.locationInfo li {
+  padding: 5px 0px;
+}
